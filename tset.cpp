@@ -1,3 +1,10 @@
+// ННГУ, ВМК, Курс "Методы программирования-2", С++, ООП
+//
+// tset.cpp - Copyright (c) Гергель В.П. 04.10.2001
+//   Переработано для Microsoft Visual Studio 2008 Сысоевым А.В. (19.04.2015)
+//
+// Множество - реализация через битовые поля
+
 #include "tset.h"
 
 TSet::TSet(int mp) : BitField(mp)
@@ -33,7 +40,7 @@ int TSet::IsMember(const int Elem) const // элемент множества?
 {
     if (Elem < 0 || Elem >= MaxPower)
     {
-        throw "element exists (IsMember)";
+        throw "Element exists";
     }
     return BitField.GetBit(Elem);
 }
@@ -42,7 +49,7 @@ void TSet::InsElem(const int Elem) // включение элемента мно
 {
     if (Elem < 0 || Elem >= MaxPower)
     {
-        throw "element exists (InsElem)";
+        throw "Element exists";
     }
     return BitField.SetBit(Elem);
 }
@@ -51,7 +58,7 @@ void TSet::DelElem(const int Elem) // исключение элемента мн
 {
     if (Elem < 0 || Elem >= MaxPower)
     {
-        throw "element exists (DelElem)";
+        throw "Element exists";
     }
     return BitField.ClrBit(Elem);
 }
@@ -92,7 +99,7 @@ TSet TSet::operator+(const int Elem) // объединение с элемент
 {
     if (Elem < 0 || Elem >= MaxPower)
     {
-        throw "element exists (operator+)";
+        throw "Element exists";
     }
     TSet tmp(BitField);
     tmp.InsElem(Elem);
@@ -103,7 +110,7 @@ TSet TSet::operator-(const int Elem) // разность с элементом
 {
     if (Elem < 0 || Elem >= MaxPower)
     {
-        throw "element exists (operator-)";
+        throw "Element exists";
     }
     TSet tmp(BitField);
     tmp.DelElem(Elem);
@@ -133,7 +140,7 @@ TSet TSet::operator~(void) // дополнение
 istream &operator>>(istream &istr, TSet &s) // ввод
 {
     const int mp = s.MaxPower;
-    for (int i = 0; i <= mp; ++i)
+    for (int i = 0; i < mp; ++i)
     {
         int val; istr >> val;
         s.InsElem(val);
@@ -144,8 +151,12 @@ istream &operator>>(istream &istr, TSet &s) // ввод
 ostream& operator<<(ostream &ostr, const TSet &s) // вывод
 {
     const int mp = s.MaxPower;
-    for (int i = 0; i <= mp; ++i) {
-        ostr << s.IsMember(i) << " ";
+    for (size_t i = 0; i < mp; ++i)
+    {
+        if (s.BitField.GetBit(i))
+            ostr << i;
+        if (i + 1 < s.MaxPower) 
+            ostr << " ";
     }
     return ostr;
 }
